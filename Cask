@@ -5,6 +5,7 @@
 (depends-on "helm")
 (depends-on "helm-ls-git")
 (depends-on "helm-ag")
+(depends-on "magit")
 (depends-on "auto-complete")
 (depends-on "flycheck")
 (depends-on "git-gutter-fringe")

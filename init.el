@@ -27,9 +27,10 @@
 (setq dired-recursive-copies 'always)
 ;; カーソルの形を変更 box,hollow,hbar
 (setq-default cursor-type 'bar)
-;; buffer switch
-(define-key global-map (kbd "C-`") 'switch-to-next-buffer)
-(define-key global-map (kbd "C-~") 'switch-to-prev-buffer)
+;; window switch
+(define-key global-map (kbd "C-`") 'other-window)
+;; delete other window
+(define-key global-map (kbd "C-1") 'delete-other-windows)
 
 ;; dired
 (define-key global-map (kbd "M-d") 'dired)
@@ -42,7 +43,14 @@
 ;; タブをスペースで扱う
 (setq-default tab-width 4 indent-tabs-mode nil)
 
+;; helm-ls-git
 (define-key global-map (kbd "C-x C-q") 'helm-ls-git-ls)
+;; helm-ls-git起動時にフルパス表示をデフォルトにする
+(setq-default helm-ls-git-show-abs-or-relative 'absolute)
+
+;; magit-status
+(define-key global-map (kbd "C-x C-g") 'magit-status)
+
 ;; 行間設定
 (setq-default line-spacing 0.1)
 
@@ -77,10 +85,6 @@
 ;; /window-system
 )))
 
-(custom-set-faces
- )
-
-
 ;; テーマ
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'blackboard t)
@@ -104,7 +108,6 @@
 ;; git-gutter-fringe
 (require 'git-gutter-fringe)
 (global-git-gutter-mode)
-
 
 ;;;;;; scratch ;;;;;;
 (defun save-scratch-data ()
@@ -142,8 +145,8 @@
 
 (require 'popwin)
 (popwin-mode 1)
-(push "*Kill Ring*" popwin:special-display-config)
-
+(push "*grep*" popwin:special-display-config)
+(push '("\\*magit: .*\\*" :regexp t) popwin:special-display-config)
 
 (require 'flycheck)
 (global-flycheck-mode t)
