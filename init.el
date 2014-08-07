@@ -151,9 +151,6 @@
 (require 'flycheck)
 (global-flycheck-mode t)
 
-;;(require 'smooth-scrolling)
-;;(set 'smooth-scroll-margin 1)
-
 ;; ruby mode
 (add-hook 'ruby-mode-hook
           '(lambda ()
