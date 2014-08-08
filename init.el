@@ -145,8 +145,8 @@
 
 (require 'popwin)
 (popwin-mode 1)
-(push "*grep*" popwin:special-display-config)
-(push '("\\*magit: .*\\*" :regexp t) popwin:special-display-config)
+;; * hoge *形式のbufferは全てpopwinで開く
+(push '("^\\*.*\\*$" :regexp t) popwin:special-display-config)
 
 (require 'flycheck)
 (global-flycheck-mode t)
@@ -157,4 +157,5 @@
              (robe-mode)
              (robe-ac-setup)))
 
-
+;; rainbow delimiters
+(global-rainbow-delimiters-mode)

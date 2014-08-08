@@ -1,5 +1,5 @@
 .cask/
 ac-comphist.dat
-backups/
+backups/.scratch*
 auto-save-list/
 tramp
