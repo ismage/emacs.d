@@ -15,14 +15,15 @@
 (depends-on "anzu")
 (depends-on "multiple-cursors")
 (depends-on "rainbow-delimiters")
+(depends-on "exec-path-from-shell")
 
 (depends-on "js2-mode")
 (depends-on "json-mode")
 (depends-on "less-css-mode")
 (depends-on "puppet-mode")
+(depends-on "markdown-mode")
 
 (depends-on "rhtml-mode")
-(depends-on "enh-rubu-mode")
 (depends-on "rubocop")
 (depends-on "ruby-block")
 (depends-on "ruby-electric")

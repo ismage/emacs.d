@@ -73,7 +73,7 @@
 ;; toolbarを消す
 (tool-bar-mode -1)
 ;; タイトルバーにファイルパスを表示させる
-(setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
+(setq frame-title-format (format "%%b - Emacs@%s" (system-name)))
 ;; 画面サイズ
 (set-frame-size (selected-frame) 144 54)
   (set-face-attribute 'default nil :family "Ricty" :height 120)
@@ -82,6 +82,10 @@
 ;; フレーム透過
     (progn
       (set-frame-parameter nil 'alpha 90))
+
+;; MacのPATHをemacsに引き継がせる
+(exec-path-from-shell-initialize)
+
 ;; /window-system
 )))
 
@@ -159,3 +163,12 @@
 
 ;; rainbow delimiters
 (global-rainbow-delimiters-mode)
+
+;; anzu
+(global-anzu-mode t)
+(custom-set-variables
+ '(anzu-mode-lighter "")
+ '(anzu-deactivate-region t)
+ '(anzu-search-threshold 1000))
+(global-set-key (kbd "M-%") 'anzu-query-replace)
+(global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
