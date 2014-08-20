@@ -1,4 +1,4 @@
-;;; global setting
+;;;; global setting
 
 ;; 言語設定		     
 (set-language-environment 'Japanese)
@@ -43,11 +43,6 @@
 ;; タブをスペースで扱う
 (setq-default tab-width 4 indent-tabs-mode nil)
 
-;; helm-ls-git
-(define-key global-map (kbd "C-x C-q") 'helm-ls-git-ls)
-;; helm-ls-git起動時にフルパス表示をデフォルトにする
-(setq-default helm-ls-git-show-abs-or-relative 'absolute)
-
 ;; magit-status
 (define-key global-map (kbd "C-x C-g") 'magit-status)
 
@@ -56,7 +51,7 @@
 
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
-
+(require 'pallet)
 
 ;; default directory setting
 (defun cd-to-homedir-all-buffers ()
@@ -72,7 +67,7 @@
 (menu-bar-mode -1)
 ;; toolbarを消す
 (tool-bar-mode -1)
-;; タイトルバーにファイルパスを表示させる
+;; タイトルバーにbufferを表示させる
 (setq frame-title-format (format "%%b - Emacs@%s" (system-name)))
 ;; 画面サイズ
 (set-frame-size (selected-frame) 144 54)
@@ -85,6 +80,10 @@
 
 ;; MacのPATHをemacsに引き継がせる
 (exec-path-from-shell-initialize)
+
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
 ;; /window-system
 )))
@@ -108,12 +107,18 @@
 ;; helm-buffers-list key bind
 (define-key global-map (kbd "<C-tab>") 'helm-buffers-list)
 
+;; helm-ls-git
+(define-key global-map (kbd "C-x C-q") 'helm-ls-git-ls)
+;; helm-ls-git起動時にフルパス表示をデフォルトにする
+(setq-default helm-ls-git-show-abs-or-relative 'absolute)
+(setq-default helm-ff-transformer-show-only-basename nil)
+
 
 ;; git-gutter-fringe
 (require 'git-gutter-fringe)
 (global-git-gutter-mode)
 
-;;;;;; scratch ;;;;;;
+;;;; scratch
 (defun save-scratch-data ()
   (let ((str (progn
                (set-buffer (get-buffer "*scratch*"))
@@ -128,11 +133,11 @@
     (insert str)
     (save-buffer)
     (kill-buffer buf)))
-
+;;; 
 (defadvice save-buffers-kill-emacs
   (before save-scratch-buffer activate)
   (save-scratch-data))
-
+;;; 
 (defun read-scratch-data ()
   (let ((file "~/.emacs.d/backups/.scratch"))
     (when (file-exists-p file)
@@ -142,8 +147,8 @@
     ))
 
 (read-scratch-data)
+;;;; end scratch
 
-;;;;;; end scratch ;;;;;;
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
 
