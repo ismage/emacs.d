@@ -4,6 +4,7 @@
 
 (depends-on "anzu")
 (depends-on "auto-complete")
+(depends-on "dash-at-point")
 (depends-on "exec-path-from-shell")
 (depends-on "expand-region")
 (depends-on "flycheck")
@@ -11,6 +12,7 @@
 (depends-on "helm")
 (depends-on "helm-ag")
 (depends-on "helm-ls-git")
+(depends-on "init-loader")
 (depends-on "jedi")
 (depends-on "js2-mode")
 (depends-on "json-mode")

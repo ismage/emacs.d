@@ -37,6 +37,9 @@
 ;; init.el再読み込み
 ;;(define-key global-map (kbd "<f5>") 'eval-buffer)
 
+;; 検索
+(setq grep-find-command '("find . -name '*.log' -prune -o -type f -exec grep -nH -e  {} +"))
+
 ;; フォルダ検索
 (define-key global-map (kbd "C-c C-f") 'grep-find)
 
@@ -49,6 +52,7 @@
 ;; 行間設定
 (setq-default line-spacing 0.1)
 
+;; cask && pallet
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
@@ -85,6 +89,14 @@
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
+(setq default-input-method "MacOSX")
+;;(add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+;;(mac-set-input-method-parameter "Hiragana" `title "え")
+;;(mac-set-input-method-parameter "Hiragana" `cursor-color "red")
+;;(mac-set-input-method-parameter "Romaji" `title "A")
+;;(mac-set-input-method-parameter "Romaji" `cursor-color "white")
+;; 通常のミニバッファ
+;;(add-hook 'minibuffer-setup-hook '(ime-force-off))
 ;; /window-system
 )))
 
@@ -177,3 +189,7 @@
  '(anzu-search-threshold 1000))
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 (global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
+
+;; dash
+(global-set-key "\C-cd" 'dash-at-point)
+(global-set-key "\C-ce" 'dash-at-point-with-docset)
