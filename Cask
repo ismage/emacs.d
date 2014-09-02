@@ -32,5 +32,6 @@
 (depends-on "ruby-electric")
 (depends-on "ruby-end")
 (depends-on "swift-mode")
+(depends-on "undo-tree")
 (depends-on "w3m")
 (depends-on "yaml-mode")

@@ -74,7 +74,7 @@
 ;; タイトルバーにbufferを表示させる
 (setq frame-title-format (format "%%b - Emacs@%s" (system-name)))
 ;; 画面サイズ
-(set-frame-size (selected-frame) 144 54)
+(set-frame-size (selected-frame) 210 54)
   (set-face-attribute 'default nil :family "Ricty" :height 120)
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty"))
   (set-fontset-font nil 'katakana-jisx0201 (font-spec :family "Ricty"))
@@ -85,16 +85,24 @@
 ;; MacのPATHをemacsに引き継がせる
 (exec-path-from-shell-initialize)
 
+;; scroll speed 調整
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
-(setq default-input-method "MacOSX")
+;;com.apple.inputmethod.Kotoeri.Japanese
 ;;(add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-;;(mac-set-input-method-parameter "Hiragana" `title "え")
-;;(mac-set-input-method-parameter "Hiragana" `cursor-color "red")
-;;(mac-set-input-method-parameter "Romaji" `title "A")
-;;(mac-set-input-method-parameter "Romaji" `cursor-color "white")
+(defvar is_inline-patch (eq (boundp 'mac-input-method-parameters) t))
+(when is_inline-patch
+  (setq default-input-method "MacOSX")
+  (mac-set-input-method-parameter "com.apple.inputmethod.Kotoeri.Japanese" `title "え")
+  (mac-set-input-method-parameter "com.apple.inputmethod.Kotoeri.Japanese" `cursor-type 'hbar)
+  (mac-set-input-method-parameter "com.apple.inputmethod.Kotoeri.Japanese" `cursor-color "red")
+  (mac-set-input-method-parameter "com.apple.inputmethod.Kotoeri.Roman" `title "A")
+  (mac-set-input-method-parameter "com.apple.inputmethod.Kotoeri.Roman" `cursor-type 'bar)
+  (mac-set-input-method-parameter "com.apple.inputmethod.Kotoeri.Roman" `cursor-color "white")
+  (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+  )
 ;; 通常のミニバッファ
 ;;(add-hook 'minibuffer-setup-hook '(ime-force-off))
 ;; /window-system
@@ -163,6 +171,10 @@
 
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
+;; autocompleteの画面が表示されているときだけ有効
+(setq ac-use-menu-map t)
+(define-key ac-menu-map "\C-n" 'ac-next)
+(define-key ac-menu-map "\C-p" 'ac-previous)
 
 (require 'popwin)
 (popwin-mode 1)
@@ -193,3 +205,4 @@
 ;; dash
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
+
