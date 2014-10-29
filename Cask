@@ -24,6 +24,7 @@
 (depends-on "pallet")
 (depends-on "popup")
 (depends-on "popwin")
+(depends-on "projectile-rails")
 (depends-on "puppet-mode")
 (depends-on "rainbow-delimiters")
 (depends-on "rhtml-mode")
@@ -35,3 +36,4 @@
 (depends-on "undo-tree")
 (depends-on "w3m")
 (depends-on "yaml-mode")
+(depends-on "cfml-helper-mode" :git "https://github.com/emacsmirror/cfml-helper-mode.git")

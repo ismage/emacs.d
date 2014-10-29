@@ -206,3 +206,16 @@
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
+;; cfm
+(add-to-list 'auto-mode-alist '("\\.cfm$" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.cfc$" . html-mode))
+
+;; marked
+(defun markdown-preview-file ()  
+  "run Marked on the current file and revert the buffer"  
+  (interactive)  
+  (shell-command  
+   (format "open -a /Applications/Marked\\ 2.app %s"  
+       (shell-quote-argument (buffer-file-name))))  
+)  
+(global-set-key "\C-cm" 'markdown-preview-file) 
