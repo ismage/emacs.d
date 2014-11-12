@@ -37,6 +37,23 @@
 ;; init.el再読み込み
 ;;(define-key global-map (kbd "<f5>") 'eval-buffer)
 
+;; dired バッファを増やさないようにする
+;;(defun dired-up-alternate-directory ()
+;;  (interactive)
+;;  (let* ((dir (dired-current-directory))
+;;         (up (file-name-directory (directory-file-name dir))))
+;;    (or (dired-goto-file (directory-file-name dir))
+        ;; Only try dired-goto-subdir if buffer has more than one dir.
+;;        (and (cdr dired-subdir-alist)
+;;             (dired-goto-subdir up))
+;;        (progn
+;;          (find-alternate-file up)
+;;          (dired-goto-file dir)))))
+
+
+
+
+
 ;; 検索
 (setq grep-find-command '("find . -name '*.log' -prune -o -type f -exec grep -nH -e  {} +"))
 
@@ -74,7 +91,7 @@
 ;; タイトルバーにbufferを表示させる
 (setq frame-title-format (format "%%b - Emacs@%s" (system-name)))
 ;; 画面サイズ
-(set-frame-size (selected-frame) 210 54)
+(set-frame-size (selected-frame) 220 54)
   (set-face-attribute 'default nil :family "Ricty" :height 120)
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty"))
   (set-fontset-font nil 'katakana-jisx0201 (font-spec :family "Ricty"))
