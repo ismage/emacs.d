@@ -4,6 +4,7 @@
 
 (depends-on "anzu")
 (depends-on "auto-complete")
+(depends-on "cfml-helper-mode")
 (depends-on "dash-at-point")
 (depends-on "exec-path-from-shell")
 (depends-on "expand-region")
@@ -33,7 +34,8 @@
 (depends-on "ruby-electric")
 (depends-on "ruby-end")
 (depends-on "swift-mode")
+(depends-on "tabbar")
 (depends-on "undo-tree")
 (depends-on "w3m")
 (depends-on "yaml-mode")
-(depends-on "cfml-helper-mode" :git "https://github.com/emacsmirror/cfml-helper-mode.git")
+(depends-on "direx")

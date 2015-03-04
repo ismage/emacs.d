@@ -31,28 +31,29 @@
 (define-key global-map (kbd "C-`") 'other-window)
 ;; delete other window
 (define-key global-map (kbd "C-1") 'delete-other-windows)
-
+(define-key global-map (kbd "C-c C-l") 'goto-line)
 ;; dired
 (define-key global-map (kbd "M-d") 'dired)
 ;; init.el再読み込み
 ;;(define-key global-map (kbd "<f5>") 'eval-buffer)
 
+(put 'dired-find-alternate-file 'disabled nil)
 ;; dired バッファを増やさないようにする
-;;(defun dired-up-alternate-directory ()
-;;  (interactive)
-;;  (let* ((dir (dired-current-directory))
-;;         (up (file-name-directory (directory-file-name dir))))
-;;    (or (dired-goto-file (directory-file-name dir))
-        ;; Only try dired-goto-subdir if buffer has more than one dir.
-;;        (and (cdr dired-subdir-alist)
-;;             (dired-goto-subdir up))
-;;        (progn
-;;          (find-alternate-file up)
-;;          (dired-goto-file dir)))))
+(defun dired-up-alternate-directory ()
+  (interactive)
+  (let ((file (dired-get-filename)))
+    (if (file-directory-p file)
+        (dired-find-alternate-file)
+      (dired-find-file))))
 
+;;(define-key dired-mode-map (kbd "RET") 'dired-up-alternate-directory)
+;;(define-key dired-mode-map (kbd "a") 'dired-find-alternate-file)
+;; ディレクトリを先に表示
+(setq ls-lisp-dirs-first t)
+;;(setq dired-listing-switches "-AFl --group-directories-first")
 
-
-
+;;; C-x C-jをdirex:dired-jumpと入れ替える
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 
 ;; 検索
 (setq grep-find-command '("find . -name '*.log' -prune -o -type f -exec grep -nH -e  {} +"))
@@ -61,7 +62,7 @@
 (define-key global-map (kbd "C-c C-f") 'grep-find)
 
 ;; タブをスペースで扱う
-(setq-default tab-width 4 indent-tabs-mode nil)
+(setq-default tab-width 2 indent-tabs-mode nil)
 
 ;; magit-status
 (define-key global-map (kbd "C-x C-g") 'magit-status)
@@ -74,6 +75,8 @@
 (cask-initialize)
 (require 'pallet)
 
+(global-undo-tree-mode t)
+(global-set-key (kbd "C-?") 'undo-tree-redo)
 ;; default directory setting
 (defun cd-to-homedir-all-buffers ()
   "Change every current directory of all buffers to the home directory."
@@ -95,9 +98,9 @@
   (set-face-attribute 'default nil :family "Ricty" :height 120)
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty"))
   (set-fontset-font nil 'katakana-jisx0201 (font-spec :family "Ricty"))
-;; フレーム透過
-    (progn
-      (set-frame-parameter nil 'alpha 90))
+;; フレーム透過 透過させると負荷が高くなるきがするのでとりあえずやめる
+;;    (progn
+;;      (set-frame-parameter nil 'alpha 90))
 
 ;; MacのPATHをemacsに引き継がせる
 (exec-path-from-shell-initialize)
@@ -151,6 +154,46 @@
 (setq-default helm-ff-transformer-show-only-basename nil)
 
 
+(tabbar-mode 1)
+(tabbar-mwheel-mode -1)
+(dolist (btn '(tabbar-buffer-home-button
+               tabbar-scroll-left-button
+               tabbar-scroll-right-button))
+  (set btn (cons (cons "" nil)
+                 (cons "" nil))))
+
+(setq tabbar-buffer-groups-function nil)
+(setq tabbar-use-images nil)
+(global-set-key (kbd "<M-tab>") 'tabbar-forward-tab)
+(global-set-key (kbd "<M-S-tab>") 'tabbar-backward-tab)
+
+;; tabbarに*から始まる物を表示しない
+(defvar my-tabbar-displayed-buffers
+  '("*scratch*")
+  "*Regexps matches buffer names always included tabs.")
+ 
+(defun my-tabbar-buffer-list ()
+  "Return the list of buffers to show in tabs.
+Exclude buffers whose name starts with a space or an asterisk.
+The current buffer and buffers matches `my-tabbar-displayed-buffers'
+are always included."
+  (let* ((hides (list ?\  ?\*))
+         (re (regexp-opt my-tabbar-displayed-buffers))
+         (cur-buf (current-buffer))
+         (tabs (delq nil
+                     (mapcar (lambda (buf)
+                               (let ((name (buffer-name buf)))
+                                 (when (or (string-match re name)
+                                           (not (memq (aref name 0) hides)))
+                                   buf)))
+                             (buffer-list)))))
+    ;; Always include the current buffer.
+    (if (memq cur-buf tabs)
+        tabs
+      (cons cur-buf tabs))))
+(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
+
+
 ;; git-gutter-fringe
 (require 'git-gutter-fringe)
 (global-git-gutter-mode)
@@ -197,6 +240,9 @@
 (popwin-mode 1)
 ;; * hoge *形式のbufferは全てpopwinで開く
 (push '("^\\*.*\\*$" :regexp t) popwin:special-display-config)
+;; direxをpopwinで開く
+(push '(direx:direx-mode :position left :width 40 :dedicated t)
+      popwin:special-display-config)
 
 (require 'flycheck)
 (global-flycheck-mode t)
