@@ -19,10 +19,12 @@
 
 ;; バックアップファイル作成を停止
 (setq make-backup-files nil)
-;; 終了時にオートセーブファイル（#filename#）の削除
+;; オートセーブファイルの作成を停止 tishadowで不要なファイルが出来た瞬間におちるから
+(setq auto-save-default nil)
+;; 保存時にオートセーブファイル（#filename#）の削除
 (setq delete-auto-save-files t)
 ;; dired で選択したファイルを開くウィンドウを別にする
-(setq dired-dwim-target t)
+;;(setq dired-dwim-target t)
 ;; ディレクトリを再帰的にコピーする
 (setq dired-recursive-copies 'always)
 ;; カーソルの形を変更 box,hollow,hbar
@@ -48,12 +50,9 @@
 
 ;;(define-key dired-mode-map (kbd "RET") 'dired-up-alternate-directory)
 ;;(define-key dired-mode-map (kbd "a") 'dired-find-alternate-file)
-;; ディレクトリを先に表示
-(setq ls-lisp-dirs-first t)
+;; ディレクトリを先に表示(下記2行ともmacで動作せず)
+;;(setq ls-lisp-dirs-first t)
 ;;(setq dired-listing-switches "-AFl --group-directories-first")
-
-;;; C-x C-jをdirex:dired-jumpと入れ替える
-(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 
 ;; 検索
 (setq grep-find-command '("find . -name '*.log' -prune -o -type f -exec grep -nH -e  {} +"))
@@ -153,6 +152,10 @@
 (setq-default helm-ls-git-show-abs-or-relative 'absolute)
 (setq-default helm-ff-transformer-show-only-basename nil)
 
+;; 終了コマンドを無効化
+(global-set-key (kbd "C-x C-c") 'helm-M-x)
+;; 終了コマンドにエイリアスをつける
+(defalias 'exit 'save-buffers-kill-emacs)
 
 (tabbar-mode 1)
 (tabbar-mwheel-mode -1)
@@ -231,10 +234,37 @@ are always included."
 
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
+
 ;; autocompleteの画面が表示されているときだけ有効
 (setq ac-use-menu-map t)
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
+
+(setq ac-dictionary-directories t)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+
+(autoload 'js3-mode "js3" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
+
+(custom-set-variables
+ '(js3-auto-indent-p t)
+ '(js3-curly-indent-offset 0)
+ '(js3-enter-indents-newline t)
+ '(js3-expr-indent-offset 2))
+
+;;(add-hook 'js-mode-hook 'js2-minor-mode)
+;;(add-hook 'js3-mode-hook 'ac-js2-mode)
+(setq ac-modes (cons 'js3-mode ac-modes))
+(add-hook 'js3-mode-hook
+          '(lambda ()
+             (add-to-list 'ac-dictionary-files "~/.emacs.d/ac-dict/titanium")
+))
+
+(require 'direx)
+;;; C-x C-jをdirex:dired-jumpと入れ替える
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
+
 
 (require 'popwin)
 (popwin-mode 1)
@@ -254,7 +284,9 @@ are always included."
              (robe-ac-setup)))
 
 ;; rainbow delimiters
-(global-rainbow-delimiters-mode)
+(require 'rainbow-delimiters)
+;;(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+;;(global-rainbow-delimiters-mode)
 
 ;; anzu
 (global-anzu-mode t)
