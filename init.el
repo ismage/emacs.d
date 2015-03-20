@@ -1,4 +1,5 @@
-;;;; global setting
+
+;; global setting
 
 ;; 言語設定		     
 (set-language-environment 'Japanese)
@@ -39,6 +40,9 @@
 ;; init.el再読み込み
 ;;(define-key global-map (kbd "<f5>") 'eval-buffer)
 
+;; カーソル行ハイライト
+(global-hl-line-mode t)
+
 (put 'dired-find-alternate-file 'disabled nil)
 ;; dired バッファを増やさないようにする
 (defun dired-up-alternate-directory ()
@@ -68,6 +72,11 @@
 
 ;; 行間設定
 (setq-default line-spacing 0.1)
+
+;; 大文字小文字無視
+(setq completion-ignore-case t)
+;; buffer自動再読み込み
+(global-auto-revert-mode 1)
 
 ;; cask && pallet
 (require 'cask "~/.cask/cask.el")
@@ -174,7 +183,7 @@
 (defvar my-tabbar-displayed-buffers
   '("*scratch*")
   "*Regexps matches buffer names always included tabs.")
- 
+
 (defun my-tabbar-buffer-list ()
   "Return the list of buffers to show in tabs.
 Exclude buffers whose name starts with a space or an asterisk.
@@ -265,12 +274,13 @@ are always included."
 ;;; C-x C-jをdirex:dired-jumpと入れ替える
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 
-
+;; diredの
 (require 'popwin)
 (popwin-mode 1)
 ;; * hoge *形式のbufferは全てpopwinで開く
 (push '("^\\*.*\\*$" :regexp t) popwin:special-display-config)
 ;; direxをpopwinで開く
+(push '("^.*<2>$" :regexp t :position left :width 40 :dedicated t) popwin:special-display-config)
 (push '(direx:direx-mode :position left :width 40 :dedicated t)
       popwin:special-display-config)
 

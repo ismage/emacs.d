@@ -10,12 +10,6 @@ export PATH="~/.cask/bin:$PATH"
 ## Caskを使ってパッケージをインストール
 ```
 cd ~/.emacs.d
-cask
+cask insatall
 ```
 
-## w3m
-```
-# caskでw3mのインストールは終わっているが
-# w3mコマンドは別途入れる必要がある
-brew install w3m
-```
