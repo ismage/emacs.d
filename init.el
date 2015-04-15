@@ -105,11 +105,12 @@
 (tool-bar-mode -1)
 ;; タイトルバーにbufferを表示させる
 (setq frame-title-format (format "%%b - Emacs@%s" (system-name)))
-;; 画面サイズ
-(set-frame-size (selected-frame) 220 54)
+;; 画面サイズ（縦は画面いっぱいに広げるようにする）
+(set-frame-size (selected-frame) 220 (- (/ (- (x-display-pixel-height) 22) (frame-char-height)) 1))
   (set-face-attribute 'default nil :family "Ricty" :height 120)
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty"))
   (set-fontset-font nil 'katakana-jisx0201 (font-spec :family "Ricty"))
+
 ;; フレーム透過 透過させると負荷が高くなるきがするのでとりあえずやめる
 ;;    (progn
 ;;      (set-frame-parameter nil 'alpha 90))
