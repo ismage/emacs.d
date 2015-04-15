@@ -58,6 +58,10 @@
 ;;(setq ls-lisp-dirs-first t)
 ;;(setq dired-listing-switches "-AFl --group-directories-first")
 
+;; 起動時にウィンドウ分割
+(setq w (selected-window))
+(setq w2 (split-window w nil t))
+
 ;; 検索
 (setq grep-find-command '("find . -name '*.log' -prune -o -type f -exec grep -nH -e  {} +"))
 
