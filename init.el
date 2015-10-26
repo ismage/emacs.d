@@ -59,14 +59,15 @@
 ;;(setq dired-listing-switches "-AFl --group-directories-first")
 
 ;; 起動時にウィンドウ分割
-(setq w (selected-window))
-(setq w2 (split-window w nil t))
+;;(setq w (selected-window))
+;;(setq w2 (split-window w nil t))
 
 ;; 検索
 (setq grep-find-command '("find . -name '*.log' -prune -o -type f -exec grep -nH -e  {} +"))
 
 ;; フォルダ検索
-(define-key global-map (kbd "C-c C-f") 'grep-find)
+;;(define-key global-map (kbd "C-c C-f") 'grep-find)
+(define-key global-map (kbd "C-c C-f") 'lgrep)
 
 ;; タブをスペースで扱う
 (setq-default tab-width 2 indent-tabs-mode nil)
