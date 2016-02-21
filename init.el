@@ -1,3 +1,53 @@
+(when load-file-name
+   (setq user-emacs-directory (file-name-directory load-file-name)))
+
+	(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
+	(unless (require 'el-get nil 'noerror)
+	   (with-current-buffer
+		      (url-retrieve-synchronously
+			          "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+			      (goto-char (point-max))
+				      (eval-print-last-sexp)))
+
+;; package install
+(el-get-bundle! anzu)
+(el-get-bundle! auto-complete)
+(el-get-bundle dash-at-point)
+(el-get-bundle exec-path-from-shell)
+(el-get-bundle expand-region)
+
+(el-get-bundle! flycheck/flycheck :depends (dash pkg-info let-alist cl-lib seq))
+(el-get-bundle! magit)
+(el-get-bundle git-gutter-fringe)
+(el-get-bundle! helm)
+(el-get-bundle helm-ag)
+(el-get-bundle helm-ls-git)
+(el-get-bundle! undo-tree)
+
+;; prog mode
+(el-get-bundle coffee-mode)
+(el-get-bundle go-mode)
+(el-get-bundle js2-mode)
+(el-get-bundle json-mode)
+(el-get-bundle less-css-mode)
+(el-get-bundle motion-mode)
+(el-get-bundle puppet-mode)
+(el-get-bundle rhtml-mode)
+
+(el-get-bundle ruby-mode)
+(el-get-bundle sass-mode)
+
+(el-get-bundle rubocop)
+(el-get-bundle ruby-block)
+(el-get-bundle ruby-electric)
+(el-get-bundle ruby-end)
+
+(el-get-bundle! direx)
+;;(el-get-bundle tabbar)
+(el-get-bundle rainbow-delimiters)
+(el-get-bundle elpa:popwin)
+
+(el-get-bundle jedi)
 
 ;; global setting
 
@@ -67,7 +117,7 @@
 
 ;; フォルダ検索
 ;;(define-key global-map (kbd "C-c C-f") 'grep-find)
-(define-key global-map (kbd "C-c C-f") 'lgrep)
+(define-key global-map (kbd "C-c C-f") 'grep-find)
 
 ;; タブをスペースで扱う
 (setq-default tab-width 2 indent-tabs-mode nil)
@@ -83,11 +133,10 @@
 ;; buffer自動再読み込み
 (global-auto-revert-mode 1)
 
-;; cask && pallet
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
-(require 'pallet)
+;; tramp-read-passwd got redfined対策
+;;(setq ad-redefinition-action 'accept)
 
+;;(require 'undo-tree)
 (global-undo-tree-mode t)
 (global-set-key (kbd "C-?") 'undo-tree-redo)
 ;; default directory setting
@@ -107,7 +156,7 @@
 ;; タイトルバーにbufferを表示させる
 (setq frame-title-format (format "%%b - Emacs@%s" (system-name)))
 ;; 画面サイズ（縦は画面いっぱいに広げるようにする）
-(set-frame-size (selected-frame) 240 (- (/ (- (x-display-pixel-height) 22) (frame-char-height)) 1))
+(set-frame-size (selected-frame) 200 (- (/ (- (x-display-pixel-height) 22) (frame-char-height)) 1))
   (set-face-attribute 'default nil :family "Ricty" :height 120)
   (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty"))
   (set-fontset-font nil 'katakana-jisx0201 (font-spec :family "Ricty"))
@@ -117,7 +166,7 @@
 ;;      (set-frame-parameter nil 'alpha 90))
 
 ;; MacのPATHをemacsに引き継がせる
-(exec-path-from-shell-initialize)
+;;(exec-path-from-shell-initialize)
 
 ;; scroll speed 調整
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -145,6 +194,7 @@
 ;; テーマ
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'blackboard t)
+;;(load-theme 'color-theme-solarized t)
 ;; auto-install setting
 
 ;; helm
@@ -172,44 +222,44 @@
 ;; 終了コマンドにエイリアスをつける
 (defalias 'exit 'save-buffers-kill-emacs)
 
-(tabbar-mode 1)
-(tabbar-mwheel-mode -1)
-(dolist (btn '(tabbar-buffer-home-button
-               tabbar-scroll-left-button
-               tabbar-scroll-right-button))
-  (set btn (cons (cons "" nil)
-                 (cons "" nil))))
+;;(tabbar-mode 1)
+;;(tabbar-mwheel-mode -1)
+;;(dolist (btn '(tabbar-buffer-home-button
+;;               tabbar-scroll-left-button
+;;               tabbar-scroll-right-button))
+;;  (set btn (cons (cons "" nil)
+;;                 (cons "" nil))))
 
-(setq tabbar-buffer-groups-function nil)
-(setq tabbar-use-images nil)
-(global-set-key (kbd "<M-tab>") 'tabbar-forward-tab)
-(global-set-key (kbd "<M-S-tab>") 'tabbar-backward-tab)
+;;(setq tabbar-buffer-groups-function nil)
+;;(setq tabbar-use-images nil)
+;;(global-set-key (kbd "<M-tab>") 'tabbar-forward-tab)
+;;(global-set-key (kbd "<M-S-tab>") 'tabbar-backward-tab)
 
 ;; tabbarに*から始まる物を表示しない
-(defvar my-tabbar-displayed-buffers
-  '("*scratch*")
-  "*Regexps matches buffer names always included tabs.")
+;;(defvar my-tabbar-displayed-buffers
+;;  '("*scratch*")
+;;  "*Regexps matches buffer names always included tabs.")
 
-(defun my-tabbar-buffer-list ()
-  "Return the list of buffers to show in tabs.
-Exclude buffers whose name starts with a space or an asterisk.
-The current buffer and buffers matches `my-tabbar-displayed-buffers'
-are always included."
-  (let* ((hides (list ?\  ?\*))
-         (re (regexp-opt my-tabbar-displayed-buffers))
-         (cur-buf (current-buffer))
-         (tabs (delq nil
-                     (mapcar (lambda (buf)
-                               (let ((name (buffer-name buf)))
-                                 (when (or (string-match re name)
-                                           (not (memq (aref name 0) hides)))
-                                   buf)))
-                             (buffer-list)))))
+;;(defun my-tabbar-buffer-list ()
+;;  "Return the list of buffers to show in tabs.
+;;Exclude buffers whose name starts with a space or an asterisk.
+;;The current buffer and buffers matches `my-tabbar-displayed-buffers'
+;;are always included."
+;;  (let* ((hides (list ?\  ?\*))
+;;         (re (regexp-opt my-tabbar-displayed-buffers))
+;;         (cur-buf (current-buffer))
+;;         (tabs (delq nil
+;;                     (mapcar (lambda (buf)
+;;                               (let ((name (buffer-name buf)))
+;;                                 (when (or (string-match re name)
+;;                                           (not (memq (aref name 0) hides)))
+;;                                   buf)))
+;;                             (buffer-list)))))
     ;; Always include the current buffer.
-    (if (memq cur-buf tabs)
-        tabs
-      (cons cur-buf tabs))))
-(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
+;;    (if (memq cur-buf tabs)
+;;        tabs
+;;      (cons cur-buf tabs))))
+;;(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
 
 
 ;; git-gutter-fringe
@@ -249,6 +299,7 @@ are always included."
 
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
+(ac-config-default)
 
 ;; autocompleteの画面が表示されているときだけ有効
 (setq ac-use-menu-map t)
@@ -257,24 +308,22 @@ are always included."
 
 (setq ac-dictionary-directories t)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
 
-(autoload 'js3-mode "js3" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
+(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 (custom-set-variables
- '(js3-auto-indent-p t)
- '(js3-curly-indent-offset 0)
- '(js3-enter-indents-newline t)
- '(js3-expr-indent-offset 2))
+ '(js2-auto-indent-p t)
+ '(js2-curly-indent-offset 0)
+ '(js2-enter-indents-newline t)
+ '(js2-expr-indent-offset 2))
 
-;;(add-hook 'js-mode-hook 'js2-minor-mode)
-;;(add-hook 'js3-mode-hook 'ac-js2-mode)
-(setq ac-modes (cons 'js3-mode ac-modes))
-(add-hook 'js3-mode-hook
+(setq ac-modes (cons 'js2-mode ac-modes))
+(add-hook 'js2-mode-hook
           '(lambda ()
              (add-to-list 'ac-dictionary-files "~/.emacs.d/ac-dict/titanium")
 ))
+
 
 (require 'direx)
 ;;; C-x C-jをdirex:dired-jumpと入れ替える
