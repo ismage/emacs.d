@@ -8,3 +8,6 @@ recentf
 w3m-cookie
 *.elc
 eshell/
+el-get/
+elpa/
+tutorial/
