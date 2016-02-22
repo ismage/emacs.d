@@ -47,9 +47,9 @@
 (el-get-bundle rainbow-delimiters)
 (el-get-bundle elpa:popwin)
 (el-get-bundle! markdown-mode)
-
 (el-get-bundle jedi)
 
+(el-get-bundle solarized-theme)
 ;; global setting
 
 ;; 言語設定		     
@@ -194,7 +194,8 @@
 
 ;; テーマ
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'blackboard t)
+;;(load-theme 'blackboard t)
+(load-theme 'solarized-dark t)
 ;; auto-install setting
 
 ;; helm
