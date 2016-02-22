@@ -43,9 +43,10 @@
 (el-get-bundle ruby-end)
 
 (el-get-bundle! direx)
-;;(el-get-bundle tabbar)
+(el-get-bundle! tabbar)
 (el-get-bundle rainbow-delimiters)
 (el-get-bundle elpa:popwin)
+(el-get-bundle! markdown-mode)
 
 (el-get-bundle jedi)
 
@@ -194,7 +195,6 @@
 ;; テーマ
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'blackboard t)
-;;(load-theme 'color-theme-solarized t)
 ;; auto-install setting
 
 ;; helm
@@ -222,44 +222,44 @@
 ;; 終了コマンドにエイリアスをつける
 (defalias 'exit 'save-buffers-kill-emacs)
 
-;;(tabbar-mode 1)
-;;(tabbar-mwheel-mode -1)
-;;(dolist (btn '(tabbar-buffer-home-button
-;;               tabbar-scroll-left-button
-;;               tabbar-scroll-right-button))
-;;  (set btn (cons (cons "" nil)
-;;                 (cons "" nil))))
+(tabbar-mode 1)
+(tabbar-mwheel-mode -1)
+(dolist (btn '(tabbar-buffer-home-button
+               tabbar-scroll-left-button
+               tabbar-scroll-right-button))
+  (set btn (cons (cons "" nil)
+                 (cons "" nil))))
 
-;;(setq tabbar-buffer-groups-function nil)
-;;(setq tabbar-use-images nil)
-;;(global-set-key (kbd "<M-tab>") 'tabbar-forward-tab)
-;;(global-set-key (kbd "<M-S-tab>") 'tabbar-backward-tab)
+(setq tabbar-buffer-groups-function nil)
+(setq tabbar-use-images nil)
+(global-set-key (kbd "<M-tab>") 'tabbar-forward-tab)
+(global-set-key (kbd "<M-S-tab>") 'tabbar-backward-tab)
 
 ;; tabbarに*から始まる物を表示しない
-;;(defvar my-tabbar-displayed-buffers
-;;  '("*scratch*")
-;;  "*Regexps matches buffer names always included tabs.")
+(defvar my-tabbar-displayed-buffers
+  '("*scratch*")
+  "*Regexps matches buffer names always included tabs.")
 
-;;(defun my-tabbar-buffer-list ()
+(defun my-tabbar-buffer-list ()
 ;;  "Return the list of buffers to show in tabs.
 ;;Exclude buffers whose name starts with a space or an asterisk.
 ;;The current buffer and buffers matches `my-tabbar-displayed-buffers'
 ;;are always included."
-;;  (let* ((hides (list ?\  ?\*))
-;;         (re (regexp-opt my-tabbar-displayed-buffers))
-;;         (cur-buf (current-buffer))
-;;         (tabs (delq nil
-;;                     (mapcar (lambda (buf)
-;;                               (let ((name (buffer-name buf)))
-;;                                 (when (or (string-match re name)
-;;                                           (not (memq (aref name 0) hides)))
-;;                                   buf)))
-;;                             (buffer-list)))))
+  (let* ((hides (list ?\  ?\*))
+         (re (regexp-opt my-tabbar-displayed-buffers))
+         (cur-buf (current-buffer))
+         (tabs (delq nil
+                     (mapcar (lambda (buf)
+                               (let ((name (buffer-name buf)))
+                                 (when (or (string-match re name)
+                                           (not (memq (aref name 0) hides)))
+                                   buf)))
+                             (buffer-list)))))
     ;; Always include the current buffer.
-;;    (if (memq cur-buf tabs)
-;;        tabs
-;;      (cons cur-buf tabs))))
-;;(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
+    (if (memq cur-buf tabs)
+        tabs
+      (cons cur-buf tabs))))
+(setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
 
 
 ;; git-gutter-fringe
