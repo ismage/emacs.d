@@ -1,15 +1,12 @@
 emacs.d
 =======
+Caskをやめてel-getに変更
 
-## Caskのインストールを行っておく  
+初回起動時に必要なパッケージをインストール
+el-get-bundleに!をつけるとインストールとrequireを行う
+
 ```
-curl -fsSkL https://raw.github.com/cask/cask/master/go | python
-# caskのパス追加(.bashrcに書いてsource ~/.bashrcする)
-export PATH="~/.cask/bin:$PATH"
-```
-## Caskを使ってパッケージをインストール
-```
-cd ~/.emacs.d
-cask insatall
+# hogeパッケージをrequireした状態にしてくれる
+(el-get-bundle! hoge)
 ```
 
