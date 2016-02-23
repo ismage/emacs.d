@@ -33,6 +33,7 @@
 (el-get-bundle motion-mode)
 (el-get-bundle puppet-mode)
 (el-get-bundle rhtml-mode)
+(el-get-bundle! php-mode)
 
 (el-get-bundle ruby-mode)
 (el-get-bundle sass-mode)
@@ -50,6 +51,7 @@
 (el-get-bundle jedi)
 
 (el-get-bundle solarized-theme)
+(el-get-bundle powerline)
 ;; global setting
 
 ;; 言語設定		     
@@ -194,9 +196,12 @@
 
 ;; テーマ
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-;;(load-theme 'blackboard t)
-(load-theme 'solarized-dark t)
+(load-theme 'blackboard t)
+;;(load-theme 'solarized-dark t)
 ;; auto-install setting
+
+(require 'powerline)
+(powerline-default-theme)
 
 ;; helm
 (require 'helm-mode)
@@ -351,7 +356,7 @@
 
 ;; rainbow delimiters
 (require 'rainbow-delimiters)
-;;(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 ;;(global-rainbow-delimiters-mode)
 
 ;; anzu
