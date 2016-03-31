@@ -9,6 +9,11 @@
 			      (goto-char (point-max))
 				      (eval-print-last-sexp)))
 
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
 ;; package install
 (el-get-bundle! anzu)
 (el-get-bundle! auto-complete)
@@ -27,7 +32,7 @@
 ;; prog mode
 (el-get-bundle coffee-mode)
 (el-get-bundle go-mode)
-(el-get-bundle js2-mode)
+(el-get-bundle! js2-mode)
 (el-get-bundle json-mode)
 (el-get-bundle less-css-mode)
 (el-get-bundle motion-mode)
@@ -35,13 +40,18 @@
 (el-get-bundle rhtml-mode)
 (el-get-bundle! php-mode)
 
-(el-get-bundle ruby-mode)
+(el-get-bundle! ruby-mode)
+(el-get-bundle! yaml-mode)
 (el-get-bundle sass-mode)
 
+(el-get-bundle inf-ruby)
 (el-get-bundle rubocop)
-(el-get-bundle ruby-block)
-(el-get-bundle ruby-electric)
-(el-get-bundle ruby-end)
+(el-get-bundle robe)
+(el-get-bundle! ruby-block)
+(el-get-bundle! ruby-electric)
+(el-get-bundle! ruby-end)
+(el-get-bundle! rbenv)
+(el-get-bundle elpa:rinari)
 
 (el-get-bundle! direx)
 (el-get-bundle! tabbar)
@@ -52,6 +62,7 @@
 
 (el-get-bundle solarized-theme)
 (el-get-bundle powerline)
+(el-get-bundle smooth-scroll)
 ;; global setting
 
 ;; 言語設定		     
@@ -203,6 +214,8 @@
 (require 'powerline)
 (powerline-default-theme)
 
+(require 'smooth-scroll)
+(smooth-scroll-mode t)
 ;; helm
 (require 'helm-mode)
 ;; helm-mode on
@@ -317,12 +330,16 @@
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
-(custom-set-variables
- '(js2-auto-indent-p t)
- '(js2-curly-indent-offset 0)
- '(js2-enter-indents-newline t)
- '(js2-expr-indent-offset 2))
+(setq js2-basic-offset 2)
+(setq js2-auto-indent-p t)
+(setq js2-curly-indent-offset 0)
+(setq js2-enter-indents-newline t)
+(setq js2-expr-indent-offset 2)
+;;(custom-set-variables
+;; '(js2-auto-indent-p t)
+;; '(js2-curly-indent-offset 0)
+;; '(js2-enter-indents-newline t)
+;; '(js2-expr-indent-offset 2))
 
 (setq ac-modes (cons 'js2-mode ac-modes))
 (add-hook 'js2-mode-hook
