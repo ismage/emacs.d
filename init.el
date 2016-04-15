@@ -40,6 +40,9 @@
 (el-get-bundle rhtml-mode)
 (el-get-bundle! php-mode)
 
+(el-get-bundle python-mode :type git :url "https://gitlab.com/python-mode-devs/python-mode.git")
+(el-get-bundle jedi)
+
 (el-get-bundle! ruby-mode)
 (el-get-bundle! yaml-mode)
 (el-get-bundle sass-mode)
@@ -347,6 +350,16 @@
              (add-to-list 'ac-dictionary-files "~/.emacs.d/ac-dict/titanium")
 ))
 
+;;(require 'virtualenvwrapper)
+;;(venv-initialize-interactive-shells) ;; if you want interactive shell support
+;;(venv-initialize-eshell) ;; if you want eshell support
+;; homebrewでpyenvとvirtualenvを入れているから下記
+;;(setq venv-location "/usr/local/var/pyenv/shims/virtualenv")
+
+(require 'python-mode)
+(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 (require 'direx)
 ;;; C-x C-jをdirex:dired-jumpと入れ替える
