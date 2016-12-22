@@ -1,3 +1,10 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (when load-file-name
    (setq user-emacs-directory (file-name-directory load-file-name)))
 
@@ -166,6 +173,7 @@
 ;;;;;; window-systemでの設定 ;;;;;;
 (let ((ws window-system))
 (cond ((eq ws 'ns)
+;;(cond ((eq ws 'mac)
 ;; メニューバーを隠す
 (menu-bar-mode -1)
 ;; toolbarを消す
@@ -392,9 +400,14 @@
 ;; anzu
 (global-anzu-mode t)
 (custom-set-variables
- '(anzu-mode-lighter "")
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(anzu-deactivate-region t)
- '(anzu-search-threshold 1000))
+ '(anzu-mode-lighter "")
+ '(anzu-search-threshold 1000)
+ '(package-selected-packages (quote (solarized-theme popwin rinari robe))))
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 (global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
 
@@ -419,3 +432,9 @@
 ;; ruby-mode magic comment抑制
 (setq ruby-insert-encoding-magic-comment nil)
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
