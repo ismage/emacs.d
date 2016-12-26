@@ -3,8 +3,6 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
-
 (when load-file-name
    (setq user-emacs-directory (file-name-directory load-file-name)))
 
@@ -28,7 +26,8 @@
 (el-get-bundle exec-path-from-shell)
 (el-get-bundle expand-region)
 
-(el-get-bundle! flycheck/flycheck :depends (dash pkg-info let-alist cl-lib seq))
+;;(el-get-bundle! flycheck/flycheck :depends (dash pkg-info let-alist cl-lib seq))
+(el-get-bundle! flycheck)
 (el-get-bundle! magit)
 (el-get-bundle git-gutter-fringe)
 (el-get-bundle! helm)
@@ -54,7 +53,7 @@
 (el-get-bundle! yaml-mode)
 (el-get-bundle sass-mode)
 
-(el-get-bundle inf-ruby)
+;;(el-get-bundle inf-ruby)
 (el-get-bundle rubocop)
 (el-get-bundle robe)
 (el-get-bundle! ruby-block)
@@ -68,11 +67,13 @@
 (el-get-bundle rainbow-delimiters)
 (el-get-bundle elpa:popwin)
 (el-get-bundle! markdown-mode)
-(el-get-bundle jedi)
+
 
 (el-get-bundle solarized-theme)
 (el-get-bundle powerline)
 (el-get-bundle smooth-scroll)
+
+(package-initialize)
 ;; global setting
 
 ;; 言語設定		     
@@ -198,6 +199,10 @@
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
+(require 'smooth-scroll)
+(smooth-scroll-mode t)
+
+
 ;;com.apple.inputmethod.Kotoeri.Japanese
 ;;(add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
 (defvar is_inline-patch (eq (boundp 'mac-input-method-parameters) t))
@@ -225,8 +230,6 @@
 (require 'powerline)
 (powerline-default-theme)
 
-(require 'smooth-scroll)
-(smooth-scroll-mode t)
 ;; helm
 (require 'helm-mode)
 ;; helm-mode on
