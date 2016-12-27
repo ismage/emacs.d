@@ -11,3 +11,4 @@ eshell/
 el-get/
 elpa/
 tutorial/
+.python-environments/
